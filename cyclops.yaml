@@ -1,0 +1,77 @@
+heat_template_version: 2013-05-23
+description: >
+  Heat template to deploy Cyclops Docker compose to an existing host
+parameters:
+  key_name:
+    type: string
+    default: gcs
+  flavor:
+    type: string
+    default: m1.small
+  image:
+    type: string
+    default: fedora-atomic-latest
+  private_net:
+    type: string
+    default: int-net
+  public_net:
+    type: string
+    default: ext-net
+
+resources:
+  cyclops_config:
+    type: OS::Heat::SoftwareConfig
+    properties:
+      group: docker-compose
+      inputs:
+      - name: foo
+      outputs:
+      - name: result
+      config:
+        get_file: http://statics.apps.yookore.net/cyclops/docker-compose.yml
+
+  deployment:
+    type: OS::Heat::SoftwareDeployment
+    properties: 
+      name: deployment
+      config:
+        get_resource: cyclops_config
+      server:
+        get_resource: server
+      input_values:
+        foo: foooooo
+
+  server:
+    type: OS::Nova::Server
+    properties:
+      image: {get_param: image}
+      flavor: {get_param: flavor}
+      key_name: {get_param: key_name}
+      networks:
+      - network: {get_param: private_net}
+      user_data_format: SOFTWARE_CONFIG
+
+  server_floating_ip_assoc:
+    type: OS::Neutron::FloatingIPAssociation
+    properties:
+      floatingip_id: {get_resource: floating_ip}
+      port_id: {get_attr: [server, addresses, {get_param: private_net}, 0, port]}
+
+  floating_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network: {get_param: public_net}
+
+outputs:
+  result:
+    value:
+      get_attr: [deployment, result]
+  stdout:
+    value:
+      get_attr: [deployment, deploy_stdout]
+  stderr:
+    value:
+      get_attr: [deployment, deploy_stderr]
+  status_code:
+    value:
+      get_attr: [deployment, deploy_status_code]
