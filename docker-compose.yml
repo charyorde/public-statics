@@ -65,13 +65,13 @@ services:
 
   static-rate:
     build: 
-      context: https://github.com/charyorde/cyclops-static-rate-docker
+      context: https://github.com/charyorde/cyclops-static-rate-docker.git
     links:
       - rabbitmq
 
   udr:
     build: 
-      context: https://github.com/charyorde/cyclops-udr-docker
+      context: https://github.com/charyorde/cyclops-udr-docker.git
     links:
       - influxdb
       - rabbitmq
@@ -80,7 +80,7 @@ services:
 
   rc:
     build: 
-      context: https://github.com/charyorde/cyclops-rc-docker
+      context: https://github.com/charyorde/cyclops-rc-docker.git
     links:
       - influxdb
       - rabbitmq
@@ -89,7 +89,7 @@ services:
 
   billing:
     build: 
-      context: https://github.com/charyorde/cyclops-billing-docker
+      context: https://github.com/charyorde/cyclops-billing-docker.git
     links:
       - influxdb
       - rabbitmq
@@ -98,7 +98,7 @@ services:
 
   dashboard:
    build:
-      context: https://github.com/charyorde/cyclops-dashboard-docker
+      context: https://github.com/charyorde/cyclops-dashboard-docker.git
    links:
       - udr
       - billing
