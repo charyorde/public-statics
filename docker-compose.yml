@@ -31,7 +31,7 @@ services:
       - 8083:8083
       - 8086:8086
 
-  postgresql:
+  postgressql:
     image: cyclopsbilling/cyclops-postgres
     ports:
       - 5432:5432
