@@ -98,5 +98,5 @@ services:
       - udr
       - billing
       - rc
-   ports:
+    ports:
       - 8080:8080
