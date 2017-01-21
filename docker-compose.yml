@@ -64,14 +64,12 @@ services:
 #      - 4571:4571
 
   static-rate:
-    build: 
-      context: https://github.com/charyorde/cyclops-static-rate-docker.git
+    image: 192.168.3.222:5000/gcs-billing-static-rate
     links:
       - rabbitmq
 
   udr:
-    build: 
-      context: https://github.com/charyorde/cyclops-udr-docker.git
+    image: 192.168.3.222:5000/gcs-billing-udr
     links:
       - influxdb
       - rabbitmq
@@ -79,8 +77,7 @@ services:
       - 4567:4567
 
   rc:
-    build: 
-      context: https://github.com/charyorde/cyclops-rc-docker.git
+    image: 192.168.3.222:5000/gcs-billing-rc
     links:
       - influxdb
       - rabbitmq
@@ -88,8 +85,7 @@ services:
       - 4568:4568
 
   billing:
-    build: 
-      context: https://github.com/charyorde/cyclops-billing-docker.git
+    image: 192.168.3.222:5000/gcs-billing
     links:
       - influxdb
       - rabbitmq
@@ -97,9 +93,8 @@ services:
       - 4569:4569
 
   dashboard:
-   build:
-      context: https://github.com/charyorde/cyclops-dashboard-docker.git
-   links:
+    image: 192.168.3.222:5000/gcs-billing-dashboard
+    links:
       - udr
       - billing
       - rc
