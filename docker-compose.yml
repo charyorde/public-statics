@@ -32,7 +32,7 @@ services:
       - 8086:8086
 
   postgressql:
-    image: cyclopsbilling/cyclops-postgres
+    image: 192.168.3.222:5000/cyclops-postgres
     ports:
       - 5432:5432
     environment:
@@ -41,6 +41,7 @@ services:
       - POSTGRES_DB1=coin_cdr
       - POSTGRES_DB2=coin_bill
       - POSTGRES_DB3=cloudstack
+      - POSTGRES_DB4=ceilometer
 
   gatekeeper:
     image: cyclopsbilling/cyclops-gatekeeper
@@ -91,6 +92,15 @@ services:
       - rabbitmq
     ports:
       - 4569:4569
+
+  ceilometer:
+    image: 192.168.3.222:5000/gcs-metering
+    links:
+      - rabbitmq
+      - postgressql
+    ports:
+      - 4573:4573
+      - 8081:8081
 
   dashboard:
     image: 192.168.3.222:5000/gcs-billing-dashboard

@@ -20,19 +20,27 @@ version: '2'
 
 services:
   rabbitmq:
-    image: cyclopsbilling/gcss-rabbitmq
+    image: 192.168.3.222:5000/gcss-rabbitmq
+    env_file:
+    - ./rabbitmq.env
     ports:
       - 5672:5672
       - 15672:15672
 
   neo4j:
-    image: cyclopsbilling/gcss-neo4j
+    image: 192.168.3.222:5000/gcss-neo4j
+    env_file:
+    - ./neo4j.env
     ports:
-      - 8083:8083
-      - 8086:8086
+      - 7474:7474
+      - 7687:7687
+    volumes:
+      - data:/data
 
-  kaltura:
-    image: cyclopsbilling/gcss-kaltura
+  postgres:
+    image: 192.168.3.222:5000/gcss-postgresql
+    env_file:
+    - ./postgres.env
     ports:
       - 5432:5432
     environment:
@@ -41,3 +49,47 @@ services:
       - POSTGRES_DB1=coin_cdr
       - POSTGRES_DB2=coin_bill
       - POSTGRES_DB3=cloudstack
+    volumes:
+      - pgdata:/var/lib/postgresql/data/pgdata
+  
+  cassandra:
+    image: 192.168.3.222:5000/gcss-cassandra
+    env_file:
+    - ./cassandra.env
+    ports:
+      - 9042:9042
+    volumes:
+      - data:/var/lib/cassandra
+  
+  cassandra2:
+    image: 192.168.3.222:5000/gcss-cassandra
+    env_file:
+    - ./cassandra.env
+    link:
+      - cassandra
+    ports:
+      - 9042:9042
+    volumes:
+      - data:/var/lib/cassandra
+  
+  cassandra3:
+    image: 192.168.3.222:5000/gcss-cassandra
+    env_file:
+    - ./cassandra.env
+    link:
+      - cassandra
+    ports:
+      - 9042:9042
+    volumes:
+      - data:/var/lib/cassandra
+
+  #mongodb:
+    #image: 192.168.3.222:5000/gcss-mongodb
+
+  #kaltura:
+    #image: 192.168.3.222:5000/gcss-kaltura
+volumes:
+    pgdata:
+      external: true
+    data: 
+      external: true   
