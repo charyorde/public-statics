@@ -1,7 +1,7 @@
 web:
   image: 'gitlab/gitlab-ce:latest'
   restart: always
-  #hostname: 'gitlab.example.com'
+  hostname: 'git.greenwood.ng'
   #environment:
     #GITLAB_OMNIBUS_CONFIG: |
       #external_url 'https://gitlab.example.com'
