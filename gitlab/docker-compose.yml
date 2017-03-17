@@ -5,9 +5,9 @@ services:
     image: gitlab/gitlab-ce:latest
     restart: always
     hostname: 'git.greenwood.ng'
-    #environment:
-      #GITLAB_OMNIBUS_CONFIG: |
-        #external_url 'https://gitlab.example.com'
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://git.greenwood.ng'
     ports:
       - 80:80
       - 443:443
