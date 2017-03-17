@@ -1,0 +1,19 @@
+version: '2'
+
+services:
+  web:
+    image: gitlab/gitlab-ce:latest
+    restart: always
+    hostname: 'git.yookore.net'
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'https://git.yookore.net'
+    ports:
+      - 80:80
+      - 443:443
+      - 22:22
+    volumes:
+      - /srv/gitlab/config:/etc/gitlab
+      - /srv/gitlab/logs:/var/log/gitlab
+      - /srv/gitlab/data:/var/opt/gitlab
+
